@@ -1,17 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import "./App.css";
 import List from "./components/List/List";
 import AddItem from "./components/List/AddItem";
 import ListSelector from "./components/List/ListSelector";
-import { items, appointments, todoList } from "./components/List/data";
+import { items as defaultItems, appointments as defaultAppointments, todoList as defaultTodoList } from "./components/List/data";
+import { loadFromLocalStorage, saveToLocalStorage } from "./utils/storage";
 
 const App = () => {
 
 	const [currentListType, setCurrentListType] = useState('checklist');
-	const [itemList, setItemList] = useState(items);
-	const [appointmentList, setAppointmentList] = useState(appointments);
-	const [checklist, setChecklist] = useState(todoList);
+	const [itemList, setItemList] = useState(() => loadFromLocalStorage('itemList', defaultItems));
+	const [appointmentList, setAppointmentList] = useState(() => loadFromLocalStorage('appointmentList', defaultAppointments));
+	const [checklist, setChecklist] = useState(() => loadFromLocalStorage('checklist', defaultTodoList));
+
+	// saves list items to localStorage
+	useEffect(() => {
+		saveToLocalStorage('itemList', itemList)
+	}, [itemList]);
+	useEffect(() => {
+		saveToLocalStorage('appointmentList', appointmentList)
+	}, [appointmentList]);
+	useEffect(() => {
+		saveToLocalStorage('checklist', checklist)
+	}, [checklist]);
 
 	const addToList = (newItem) => {
 		newItem.id = uuidv4();

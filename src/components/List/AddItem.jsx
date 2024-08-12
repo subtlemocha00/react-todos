@@ -6,7 +6,6 @@ const AddItem = ({ addItem, currentListType }) => {
     const [descriptionValue, setDescriptionValue] = useState('');
 
     const handleClick = () => {
-        // console.log(titleValue, descriptionValue)
         const newItem = {
             ...titleValue && { name: titleValue },
             ...descriptionValue && { description: descriptionValue },
