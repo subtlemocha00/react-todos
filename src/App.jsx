@@ -4,7 +4,9 @@ import "./App.css";
 import List from "./components/List/List";
 import AddItem from "./components/List/AddItem";
 import ListSelector from "./components/List/ListSelector";
-import { items as defaultItems, appointments as defaultAppointments, todoList as defaultTodoList } from "./components/List/data";
+import {
+	items as defaultItems, appointments as defaultAppointments, todoList as defaultTodoList, cards as defaultCardList
+} from "./components/List/data";
 import { loadFromLocalStorage, saveToLocalStorage } from "./utils/storage";
 
 const App = () => {
@@ -13,6 +15,7 @@ const App = () => {
 	const [itemList, setItemList] = useState(() => loadFromLocalStorage('itemList', defaultItems));
 	const [appointmentList, setAppointmentList] = useState(() => loadFromLocalStorage('appointmentList', defaultAppointments));
 	const [checklist, setChecklist] = useState(() => loadFromLocalStorage('checklist', defaultTodoList));
+	const [cardList, setCardList] = useState(() => loadFromLocalStorage('cardList', defaultCardList))
 
 	// saves list items to localStorage
 	useEffect(() => {
@@ -24,17 +27,23 @@ const App = () => {
 	useEffect(() => {
 		saveToLocalStorage('checklist', checklist)
 	}, [checklist]);
+	useEffect(() => {
+		saveToLocalStorage('cardList', cardList)
+	}, [cardList])
 
 	const addToList = (newItem) => {
 		newItem.id = uuidv4();
 		if (currentListType === 'checklist') setChecklist(prevChecklist => [...prevChecklist, newItem]);
 		if (currentListType === 'items') setItemList(prevChecklist => [...prevChecklist, newItem]);
 		if (currentListType === 'appointments') setAppointmentList(prevChecklist => [...prevChecklist, newItem]);
+		if (currentListType === 'cardList') setCardList(prevChecklist => [...prevChecklist, newItem]);
 	}
+
 	const removeFromList = (id) => {
 		if (currentListType === 'checklist') setChecklist(prevChecklist => prevChecklist.filter(item => item.id !== id));
 		if (currentListType === 'items') setItemList(prevChecklist => prevChecklist.filter(item => item.id !== id));
 		if (currentListType === 'appointments') setAppointmentList(prevChecklist => prevChecklist.filter(item => item.id !== id));
+		if (currentListType === 'cardList') setCardList(prevChecklist => prevChecklist.filter(item => item.id !== id));
 
 	}
 
@@ -53,6 +62,10 @@ const App = () => {
 			{currentListType === 'checklist' && <>
 				<AddItem currentListType={currentListType} addItem={addToList} />
 				<List items={checklist} setItemList={setChecklist} removeItem={removeFromList} />
+			</>}
+			{currentListType === 'cardList' && <>
+				<AddItem currentListType={currentListType} addItem={addToList} />
+				<List items={cardList} setItemList={setCardList} removeItem={removeFromList} />
 			</>}
 
 		</div>

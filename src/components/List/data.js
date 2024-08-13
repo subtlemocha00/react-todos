@@ -167,3 +167,23 @@ export const todoList = [
         isActive: false
     }
 ];
+
+export const cards = [
+    {
+        id: uuidv4(),
+        name: 'Big Blonde Beer',
+        description: 'The enchanted ale. Remember to pay the final 50 gold pieces.',
+        isActive: false,
+        price: '7.77',
+        img: './src/components/List/suit_cats.jpeg'
+    },
+    {
+        id: uuidv4(),
+        name: 'Dirty Red Beer',
+        description: 'The doomed ale. Remember to pay the final 666 obsidian pieces.',
+        isActive: false,
+        price: '6.66',
+        img: './src/components/List/suit_cats.jpeg'
+    },
+
+]
